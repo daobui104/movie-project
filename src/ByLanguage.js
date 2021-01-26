@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./styles.css";
 import LanguageCodes from "./LanguageCodes";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FilmDetails from "./FilmDetails";
 import FilmListing from "./FilmListing";
 import TMDB from "./TMDB";
@@ -24,6 +24,7 @@ class ByLanguage extends Component {
   }
 
   getMovieByLanguage(alpha2) {
+    if (alpha2 === 0) return null;
     const films = [];
     for (let i = 0; i < this.props.films.length; i++) {
       if (this.props.films[i].original_language === alpha2) {
@@ -54,17 +55,19 @@ class ByLanguage extends Component {
   };
 
   render() {
-    //console.log(this.props.match.params.alpha2);
+    const films = this.getMovieByLanguage(this.props.match.params.alpha2);
     return (
       <>
         <div>
           <nav>
             <h1>By Language</h1>
             <p>
-              {this.props.languages.map((language) => {
-                return (
+              {this.props.languages.map((language, index) => {
+                return language === this.props.match.params.alpha2 ? (
+                  " " + this.getEnglishCode(language) + " | "
+                ) : (
                   <Link to={`/bylanguage/${language}`}>
-                    {`${this.getEnglishCode(language)} | `}
+                    {` ${this.getEnglishCode(language)} |`}
                   </Link>
                 );
               })}
@@ -73,7 +76,10 @@ class ByLanguage extends Component {
         </div>
         <div className="film-library">
           <FilmListing
-            films={this.getMovieByLanguage("en")}
+            films={films}
+            language={this.getEnglishCode(this.props.match.params.alpha2)}
+            pageCount={Math.ceil(films.length / TMDB.per_page)}
+            offset={0}
             handleDetailsClick={this.handleDetailsClick}
           />
           <FilmDetails film={this.state.current} cast={this.state.cast} />

@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom";
-import "./normalize.css";
-import "./index.css";
+
+import "./styles.css";
 
 import App from "./App";
 

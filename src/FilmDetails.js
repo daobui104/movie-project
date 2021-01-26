@@ -12,7 +12,7 @@ function FilmDetails(props) {
   let empty = (
     <div className="film-detail">
       <p>
-        <i className="material-icons">subscriptions</i>
+        <i className="material-icons"></i>
         <span>No film selected</span>
       </p>
     </div>
@@ -34,8 +34,6 @@ function FilmDetails(props) {
             alt={props.film.title}
           />
           {props.film.overview}
-          <br />
-          {props.film.original_language}
         </p>
       </div>
       <div className="film-cast">

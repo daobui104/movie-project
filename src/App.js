@@ -106,8 +106,10 @@ class App extends Component {
           <nav>
             <Link to="/">Home</Link> <Link to="/all">All</Link>{" "}
             <Link to="/byyear">By Year</Link>{" "}
-            <Link to="/bylanguage/0">By Language</Link>
+            <Link to="/bylanguage/en">By Language</Link>
           </nav>
+          <br />
+          <br />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route
@@ -122,8 +124,9 @@ class App extends Component {
             />
             <Route
               path="/bylanguage/:alpha2"
-              component={(props) => (
+              component={(routerProps) => (
                 <ByLanguage
+                  {...routerProps}
                   films={this.state.films}
                   languages={this.state.languages}
                 />

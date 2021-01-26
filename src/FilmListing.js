@@ -1,20 +1,35 @@
 import React, { Component } from "react";
 import FilmRow from "./FilmRow";
+import ReactPaginate from "react-paginate";
+import TMDB from "./TMDB";
 
 class FilmListing extends Component {
   state = {
-    filt: "all"
+    offset: 0
   };
 
-  handleFilterClick = (filter) => {
-    //console.log(`Setting filter to ${filter}`);
+  // static getDerivedStateFromProps(props, state) {
+  //   if (props.offset !== state.offset) {
+  //     return {
+  //       offset: props.offset
+  //     };
+  //   }
+  //   return null;
+  // }
+
+  handlePageClick = (e) => {
     this.setState({
-      filt: filter
+      offset: e.selected * TMDB.per_page
     });
   };
 
   render() {
-    const displayFilms = this.props.films.map((film) => {
+    const filmSlice = this.props.films.slice(
+      this.state.offset,
+      this.state.offset + TMDB.per_page
+    );
+
+    const displayFilms = filmSlice.map((film) => {
       return (
         <FilmRow
           film={film}
@@ -27,16 +42,26 @@ class FilmListing extends Component {
     return (
       <div className="film-list">
         <h2>
-          <center>NOW PLAYING</center>
+          <center>
+            {this.props.language} ({this.props.films.length})
+          </center>
         </h2>
-        <div>
-          <div className="film-list-filte">
-            <center>
-              <span className="section-count">{this.props.films.length}</span>
-            </center>
-          </div>
-        </div>
         {displayFilms}
+        <div>
+          <ReactPaginate
+            previousLabel={"prev"}
+            nextLabel={"next"}
+            breakLabel={"..."}
+            breakClassName={"break-me"}
+            pageCount={this.props.pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={1}
+            onPageChange={this.handlePageClick}
+            containerClassName={"pagination"}
+            subContainerClassName={"pages pagination"}
+            activeClassName={"active"}
+          />
+        </div>
       </div>
     );
   }
