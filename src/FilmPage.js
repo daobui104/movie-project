@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import "./styles.css";
 import LanguageCodes from "./LanguageCodes";
-import { Link } from "react-router-dom";
 import FilmDetails from "./FilmDetails";
 import FilmListing from "./FilmListing";
+import FilterMenu from "./FilterMenu";
 import TMDB from "./TMDB";
 
-class ByLanguage extends Component {
+class FilmPage extends Component {
   constructor(props) {
     super();
     this.state = {
@@ -24,12 +24,43 @@ class ByLanguage extends Component {
   }
 
   getMovieByLanguage(alpha2) {
-    if (alpha2 === 0) return null;
     const films = [];
+
     for (let i = 0; i < this.props.films.length; i++) {
       if (this.props.films[i].original_language === alpha2) {
         films.push(this.props.films[i]);
       }
+    }
+
+    return films;
+  }
+
+  getMovieByYear(alpha2) {
+    const films = [];
+    for (let i = 0; i < this.props.films.length; i++) {
+      if (
+        new Date(this.props.films[i].release_date).getFullYear().toString() ===
+        alpha2.toString()
+      ) {
+        films.push(this.props.films[i]);
+      }
+    }
+    return films;
+  }
+
+  getMovieTop20() {
+    const films = [];
+    const sortFilms = this.props.films.sort((a, b) =>
+      a.vote_average > b.vote_average ? 1 : -1
+    );
+    const length = this.props.films.length;
+    let j = 0;
+    for (let i = 0; i < length; i++) {
+      if (sortFilms[length - 1 - i].vote_count > 100) {
+        films.push(sortFilms[length - 1 - i]);
+        j++;
+      }
+      if (j > 19) break;
     }
     return films;
   }
@@ -55,29 +86,35 @@ class ByLanguage extends Component {
   };
 
   render() {
-    const films = this.getMovieByLanguage(this.props.match.params.alpha2);
+    const alpha2 = this.props.match.params.alpha2;
+    let films = [];
+    let headerText = "";
+    if (alpha2 === "all") {
+      films = this.props.films;
+      headerText = "All";
+    } else if (alpha2 === "top20") {
+      films = this.getMovieTop20();
+      headerText = "Top 20";
+    } else if (isNaN(alpha2)) {
+      films = this.getMovieByLanguage(alpha2);
+      headerText = this.getEnglishCode(alpha2);
+    } else {
+      films = this.getMovieByYear(alpha2);
+      headerText = alpha2;
+    }
+
     return (
       <>
-        <div>
-          <nav>
-            <h1>By Language</h1>
-            <p>
-              {this.props.languages.map((language, index) => {
-                return language === this.props.match.params.alpha2 ? (
-                  " " + this.getEnglishCode(language) + " | "
-                ) : (
-                  <Link to={`/bylanguage/${language}`}>
-                    {` ${this.getEnglishCode(language)} |`}
-                  </Link>
-                );
-              })}
-            </p>
-          </nav>
-        </div>
+        <FilterMenu
+          languages={this.props.languages}
+          years={this.props.years}
+          getEnglishCode={this.getEnglishCode}
+          alpha2={alpha2}
+        />
         <div className="film-library">
           <FilmListing
             films={films}
-            language={this.getEnglishCode(this.props.match.params.alpha2)}
+            headerText={headerText}
             pageCount={Math.ceil(films.length / TMDB.per_page)}
             offset={0}
             handleDetailsClick={this.handleDetailsClick}
@@ -88,4 +125,4 @@ class ByLanguage extends Component {
     );
   }
 }
-export default ByLanguage;
+export default FilmPage;

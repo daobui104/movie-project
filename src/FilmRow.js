@@ -13,6 +13,7 @@ function FilmRow(props) {
         <p>{new Date(props.film.release_date).getFullYear()}</p>
         <br />
         <p>Vote Average: {props.film.vote_average}</p>
+        <p>Vote Count: {props.film.vote_count}</p>
       </div>
     </div>
   );

@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import "./styles.css";
-import NowPlaying from "./NowPlaying.js";
-import ByYear from "./ByYear";
+
 import Home from "./Home";
-import ByLanguage from "./ByLanguage";
+import FilmPage from "./FilmPage";
 import TMDB from "./TMDB";
 
 class App extends Component {
@@ -100,35 +99,34 @@ class App extends Component {
   // }
 
   render() {
+    const currentYear = new Date().getFullYear();
     return (
       <Router>
         <div>
           <nav>
-            <Link to="/">Home</Link> <Link to="/all">All</Link>{" "}
-            <Link to="/byyear">By Year</Link>{" "}
-            <Link to="/bylanguage/en">By Language</Link>
+            <Link to="/">Home</Link>
+            {" | "}
+            <Link to="/filmpage/all">All</Link>
+            {" | "}
+            <Link to={`/filmpage/${currentYear}`}>By Year</Link>
+            {" | "}
+            <Link to="/filmpage/en">By Language</Link>
+            {" | "}
+            <Link to="/filmpage/top20">Top 20</Link>
           </nav>
           <br />
-          <br />
+
           <Switch>
             <Route exact path="/" component={Home} />
+
             <Route
-              path="/all"
-              component={() => <NowPlaying films={this.state.films} />}
-            />
-            <Route
-              path="/byyear"
-              component={() => (
-                <ByYear films={this.state.films} years={this.state.years} />
-              )}
-            />
-            <Route
-              path="/bylanguage/:alpha2"
+              path="/filmpage/:alpha2"
               component={(routerProps) => (
-                <ByLanguage
+                <FilmPage
                   {...routerProps}
                   films={this.state.films}
                   languages={this.state.languages}
+                  years={this.state.years}
                 />
               )}
             />

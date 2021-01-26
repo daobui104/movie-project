@@ -43,14 +43,14 @@ class FilmListing extends Component {
       <div className="film-list">
         <h2>
           <center>
-            {this.props.language} ({this.props.films.length})
+            {this.props.headerText} ({this.props.films.length})
           </center>
         </h2>
         {displayFilms}
         <div>
           <ReactPaginate
-            previousLabel={"prev"}
-            nextLabel={"next"}
+            previousLabel={"Prev"}
+            nextLabel={"Next"}
             breakLabel={"..."}
             breakClassName={"break-me"}
             pageCount={this.props.pageCount}
