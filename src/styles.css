@@ -255,7 +255,7 @@ figure {
   padding: 1em 1.5em;
   line-height: 1.45;
   color: white;
-  background-color: lightseagreen;
+  background-color: #47ccde;
 }
 
 .film-cast {
@@ -277,7 +277,7 @@ figure {
   color: #fff;
 }
 .pagination > li > a {
-  border: 1px solid #47ccde;
+  border: 1px solid white;
   padding: 5px 10px;
   outline: none;
   cursor: pointer;
@@ -294,11 +294,47 @@ figure {
 }
 .pagination > li > a,
 .pagination > li > span {
-  color: #47ccde;
+  color: white;
 }
 .pagination > li:first-child > a,
 .pagination > li:first-child > span,
 .pagination > li:last-child > a,
 .pagination > li:last-child > span {
   border-radius: unset;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #949494;
+}
+
+.ul-filter {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #ebecf0;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #47ccde;
+}
+
+.active {
+  background-color: #47ccde;
 }

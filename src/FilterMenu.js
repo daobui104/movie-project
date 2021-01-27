@@ -7,33 +7,39 @@ export default function FilterMenu(props) {
   if (!isNaN(props.alpha2)) {
     menu = (
       <nav>
-        <h1>By Year</h1>
-        <p>
+        <h1>Now Playing - By Year</h1>
+
+        <ul className="ul-filter">
           {props.years.map((year) => {
-            return year.toString() === props.alpha2.toString() ? (
-              " " + year + " | "
-            ) : (
-              <Link to={`/filmpage/${year}`}>{` ${year} |`}</Link>
+            return (
+              <li
+                class={`${
+                  year.toString() === props.alpha2.toString() ? "active" : ""
+                }`}
+              >
+                <Link to={`/filmpage/${year}`}>{` ${year}`}</Link>
+              </li>
             );
           })}
-        </p>
+        </ul>
       </nav>
     );
   } else if (props.alpha2 !== "all" && props.alpha2 !== "top20") {
     menu = (
       <nav>
-        <h1>By Language</h1>
-        <p>
+        <h1>Now Playing - By Language</h1>
+
+        <ul className="ul-filter">
           {props.languages.map((language) => {
-            return language === props.alpha2 ? (
-              " " + props.getEnglishCode(language) + " | "
-            ) : (
-              <Link to={`/filmpage/${language}`}>
-                {` ${props.getEnglishCode(language)} |`}
-              </Link>
+            return (
+              <li class={`${language === props.alpha2 ? "active" : ""}`}>
+                <Link to={`/filmpage/${language}`}>
+                  {`${props.getEnglishCode(language)}`}
+                </Link>
+              </li>
             );
           })}
-        </p>
+        </ul>
       </nav>
     );
   }

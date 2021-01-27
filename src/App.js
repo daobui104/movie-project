@@ -30,7 +30,7 @@ class App extends Component {
         return response.json();
       })
       .then((pages) => {
-        for (let page = 0; page < pages.total_pages; page++) {
+        for (let page = 1; page <= pages.total_pages; page++) {
           fetch(
             `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB.api_key}&page=${page}`
           )
@@ -46,8 +46,6 @@ class App extends Component {
                 years: [...this.state.years, ...years].sort(),
                 languages: [...this.state.languages, ...languages].sort()
               });
-              //console.log("state year: " + this.state.years);
-              //console.log("state languages: " + this.state.languages);
             })
             .catch((ex) => {
               console.log(ex);
@@ -89,30 +87,39 @@ class App extends Component {
     return languages;
   }
 
-  // getEnMovies(films) {
-  //   for (let i = 0; i < films.length; i++) {
-  //     if (films[i].original_language !== "en") {
-  //       films.splice(i, 1);
-  //     }
-  //   }
-  //   return films;
-  // }
-
   render() {
     const currentYear = new Date().getFullYear();
     return (
       <Router>
         <div>
           <nav>
-            <Link to="/">Home</Link>
-            {" | "}
-            <Link to="/filmpage/all">All</Link>
-            {" | "}
-            <Link to={`/filmpage/${currentYear}`}>By Year</Link>
-            {" | "}
-            <Link to="/filmpage/en">By Language</Link>
-            {" | "}
-            <Link to="/filmpage/top20">Top 20</Link>
+            <ul>
+              <li>
+                <b>
+                  <Link to="/">Home</Link>
+                </b>
+              </li>
+              <li>
+                <b>
+                  <Link to="/filmpage/all">All</Link>
+                </b>
+              </li>
+              <li>
+                <b>
+                  <Link to={`/filmpage/${currentYear}`}>By Year</Link>
+                </b>
+              </li>
+              <li>
+                <b>
+                  <Link to="/filmpage/en">By Language</Link>
+                </b>
+              </li>
+              <li>
+                <b>
+                  <Link to="/filmpage/top20">Top 20</Link>
+                </b>
+              </li>
+            </ul>
           </nav>
           <br />
 
