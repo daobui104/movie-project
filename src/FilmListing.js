@@ -4,24 +4,30 @@ import ReactPaginate from "react-paginate";
 import TMDB from "./TMDB";
 
 class FilmListing extends Component {
-  state = {
-    offset: 0
-  };
-
-  // static getDerivedStateFromProps(props, state) {
-  //   if (props.offset !== state.offset) {
-  //     return {
-  //       offset: props.offset
-  //     };
-  //   }
-  //   return null;
-  // }
+  constructor(props) {
+    super();
+    this.state = {
+      offset: 0
+    };
+  }
 
   handlePageClick = (e) => {
+    console.log("pageClick offset: " + this.state.offset);
     this.setState({
       offset: e.selected * TMDB.per_page
     });
+    this.props.handlePageClickFilmPage();
   };
+
+  componentDidMount() {
+    console.log("inside didmount");
+    this.props.history.listen((location, action) => {
+      this.setState({
+        offset: 0
+      });
+    });
+    console.log("didmount offset: " + this.state.offset);
+  }
 
   render() {
     const filmSlice = this.props.films.slice(

@@ -15,6 +15,22 @@ class FilmPage extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log("inside didmount");
+    this.props.history.listen((location, action) => {
+      this.setState({
+        current: {}
+      });
+    });
+    //console.log("on route change", location);
+  }
+
+  handlePageClickFilmPage = () => {
+    this.setState({
+      current: {}
+    });
+  };
+
   getEnglishCode(alpha2) {
     for (let i = 0; i < LanguageCodes.language.length; i++) {
       if (LanguageCodes.language[i].alpha2 === alpha2) {
@@ -73,7 +89,9 @@ class FilmPage extends Component {
         return response.json();
       })
       .then((data) => {
-        this.setState({ current: data });
+        this.setState({
+          current: data
+        });
       });
 
     fetch(castUrl)
@@ -87,6 +105,7 @@ class FilmPage extends Component {
 
   render() {
     const alpha2 = this.props.match.params.alpha2;
+
     let films = [];
     let headerText = "";
     if (alpha2 === "all") {
@@ -113,11 +132,13 @@ class FilmPage extends Component {
         />
         <div className="film-library">
           <FilmListing
+            {...this.props}
             films={films}
             headerText={headerText}
             pageCount={Math.ceil(films.length / TMDB.per_page)}
             offset={0}
             handleDetailsClick={this.handleDetailsClick}
+            handlePageClickFilmPage={this.handlePageClickFilmPage}
           />
           <FilmDetails film={this.state.current} cast={this.state.cast} />
         </div>

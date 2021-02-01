@@ -23,17 +23,13 @@ class App extends Component {
   }
 
   getMovies() {
-    fetch(
-      `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB.api_key}`
-    )
+    fetch(`${TMDB.source_api_url + TMDB.api_key}`)
       .then((response) => {
         return response.json();
       })
       .then((pages) => {
         for (let page = 1; page <= pages.total_pages; page++) {
-          fetch(
-            `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB.api_key}&page=${page}`
-          )
+          fetch(`${TMDB.source_api_url + TMDB.api_key}&page=${page}`)
             .then((response) => {
               return response.json();
             })
